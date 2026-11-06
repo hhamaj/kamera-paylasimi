@@ -8,57 +8,29 @@ Yerel ağdaki bilgisayarların kameralarını tek bir web sitesinden izlemek iç
 
 Şifre yok; aynı yerel ağdaki herkes bağlanıp izleyebilir.
 
-## Kurulum
+## Nasıl çalıştırılır
 
-Her şey kök dizindeki `run.py` ile çalıştırılır; ilk argüman modu seçer:
-
-```bash
-python run.py server [seçenekler]
-python run.py client [seçenekler]
-python run.py client -h          # modun seçeneklerini gösterir
-```
-
-### Server (izleme yapılacak bilgisayar)
+### Server (izleyen bilgisayar)
 
 ```bash
-# 1) Web sitesini build et (Node.js gerekir, bir kez yapılması yeter)
-cd web
-npm install
-npm run build        # çıktı server/static/ klasörüne yazılır
-
-# 2) Server'ı çalıştır
-cd ..
-python -m venv .venv
-source .venv/bin/activate        # Windows: .venv\Scripts\activate
+cd web && npm install && npm run build && cd ..
 pip install -r server/requirements.txt
-python run.py server             # varsayılan: 0.0.0.0:5000 (--host, --port ile değişir)
+python run.py server
 ```
 
-Site: `http://<server-ip>:5000`
+Tarayıcıda aç: `http://<server-ip>:5000`
 
-### Client (kameralı cihaz)
+### Client (kameralı bilgisayar)
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -r client/requirements.txt
-python run.py client --server 192.168.1.10:5000
+python run.py client --server <server-ip>:5000
 ```
 
-Açılınca `Kamera adi:` sorulur; girilen isim sitede görünür.
+Açılınca kamera adını sorar; yazıp Enter'a basın, görüntü sitede çıkar.
 
-Seçenekler:
-
-| Parametre   | Varsayılan       | Açıklama                                   |
-|-------------|------------------|--------------------------------------------|
-| `--server`  | `localhost:5000` | Server adresi                              |
-| `--camera`  | `0`              | Kamera numarası (ikinci kamera için `1`)   |
-| `--width`   | `640`            | Genişlik                                   |
-| `--height`  | `480`            | Yükseklik                                  |
-| `--fps`     | `15`             | Saniyedeki kare sayısı                     |
-| `--quality` | `70`             | JPEG kalitesi (1-100)                      |
-
-Bir cihazdaki iki kamerayı paylaşmak için client'ı iki kez, farklı `--camera` değerleriyle açın.
+İsteğe bağlı: `--camera 1` (başka kamera), `--fps 25`, `--quality 85`, `--width 1280 --height 720`.
+Tüm seçenekler: `python run.py client -h`
 
 ## Geliştirme
 
